@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e  # Exit on error
+set -e
 echo "Starting installation on ChatVM1"
 
 # Install Node.js 20.x
@@ -7,7 +7,7 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get update
 sudo apt-get install -y nodejs
 
-# Verify Node.js and npm
+# Verify installation
 node -v
 npm -v
 
@@ -15,13 +15,23 @@ npm -v
 mkdir -p /home/azureuser/chat-app
 cd /home/azureuser/chat-app
 
-# Download Socket.IO chat app files
-curl -o index.js https://raw.githubusercontent.com/socketio/socket.io/main/examples/chat/index.js
-curl -o index.html https://raw.githubusercontent.com/socketio/socket.io/main/examples/chat/index.html
+# Download chat app files from Gist
+curl -o index.js YOUR_GIST_INDEX_JS_URL
+curl -o index.html YOUR_GIST_INDEX_HTML_URL
+
+# Verify downloads
+ls -l index.js index.html
 
 # Install dependencies
 npm install express@4 socket.io@4
 
 # Start the server in the background
-nohup node index.js &
-echo "Chat server started on port 3000"
+nohup node index.js > server.log 2>&1 &
+sleep 2
+if ps aux | grep '[n]ode index.js'; then
+  echo "Chat server started on port 3000"
+else
+  echo "Failed to start server, check server.log"
+  cat server.log
+  exit 1
+fi
