@@ -16,8 +16,8 @@ mkdir -p /home/azureuser/chat-app
 cd /home/azureuser/chat-app
 
 # Download chat app files from Gist
-curl -o index.js YOUR_GIST_INDEX_JS_URL
-curl -o index.html YOUR_GIST_INDEX_HTML_URL
+curl -o index.js https://raw.githubusercontent.com/artem-datainsights/azure-chat-demo/refs/heads/main/index.js
+curl -o index.html https://raw.githubusercontent.com/artem-datainsights/azure-chat-demo/refs/heads/main/index.html
 
 # Verify downloads
 ls -l index.js index.html
